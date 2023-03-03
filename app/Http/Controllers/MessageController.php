@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MessageResource;
+use App\Mail\InitialConfiguration;
+use App\Mail\OperativityRestored;
 use App\Models\Message;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Mail;
 
 class MessageController extends Controller
 {
@@ -34,9 +38,30 @@ class MessageController extends Controller
             'email' => 'required',
         ]);
 
-        $newMessage = Message::create($validated);
+        $previous_message = Message::where('state', $validated['state'])
+            ->where('ip', $validated['ip'])
+            ->where('email', $validated['email'])
+            ->first();
 
-        return (new MessageResource($newMessage))->response();
+        // check message status
+        if ($previous_message == null) {
+            $new_message = Message::create($validated);
+            if ($validated['state'] == 0) {
+                Mail::to($validated['email'])->send(new InitialConfiguration());
+            }
+            return (new MessageResource($new_message))->response();
+        } else {
+            if ($validated['state'] == 0) {
+                // calculate downtime in hours and send email notification
+                $now = Carbon::now();
+                $downtime_delta = $previous_message->updated_at->diffInHours($now);
+                Mail::to($previous_message->email)->send(new OperativityRestored($downtime_delta));
+            }
+            $previous_message->ip = $validated['ip'];
+            $previous_message->touch();
+            $previous_message->save();
+            return (new MessageResource($previous_message))->response();
+        }
     }
 
     /**
