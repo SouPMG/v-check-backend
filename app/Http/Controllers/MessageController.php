@@ -39,8 +39,7 @@ class MessageController extends Controller
         ]);
 
         $previous_message = Message::where('state', $validated['state'])
-            ->where('ip', $validated['ip'])
-            ->where('email', $validated['email'])
+            ->where('sn', $validated['sn'])
             ->first();
 
         // check message status
