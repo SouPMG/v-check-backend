@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\MessageResource;
 use App\Mail\InitialConfiguration;
 use App\Mail\OperativityRestored;
+use App\Mail\SoftwareUpdated;
 use App\Models\Message;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -50,11 +51,21 @@ class MessageController extends Controller
             }
             return (new MessageResource($new_message))->response();
         } else {
+            // calculate downtime from last message
+            $now = Carbon::now();
+            $downtime_delta = $previous_message->updated_at->diffInHours($now);
+
             if ($validated['state'] == 0) {
-                // calculate downtime in hours and send email notification
-                $now = Carbon::now();
-                $downtime_delta = $previous_message->updated_at->diffInHours($now);
-                Mail::to($previous_message->email)->send(new OperativityRestored($downtime_delta));
+                if ($validated['frm'] != $previous_message['frm']) {
+                    // send software update notification
+                    Mail::to($previous_message->email)->send(new SoftwareUpdated());
+                } else {
+                    // send operativity restored notification
+                    Mail::to($previous_message->email)->send(new OperativityRestored($downtime_delta));
+                }
+            } else if ($validated['state'] == 1) {
+                // send internet restored notification
+                // Mail::to($previous_message->email)->send(new OperativityRestored($downtime_delta));
             }
             $previous_message->ip = $validated['ip'];
             $previous_message->alert_sent = false;
