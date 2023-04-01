@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\MessageResource;
 use App\Mail\InitialConfiguration;
+use App\Mail\InternetRestored;
 use App\Mail\OperativityRestored;
 use App\Mail\SoftwareUpdated;
 use App\Models\Message;
@@ -65,7 +66,7 @@ class MessageController extends Controller
                 }
             } else if ($validated['state'] == 1) {
                 // send internet restored notification
-                // Mail::to($previous_message->email)->send(new OperativityRestored($downtime_delta));
+                Mail::to($previous_message->email)->send(new InternetRestored($downtime_delta));
             }
             $previous_message->ip = $validated['ip'];
             $previous_message->alert_sent = false;
