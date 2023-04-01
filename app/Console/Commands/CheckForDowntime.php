@@ -22,7 +22,7 @@ class CheckForDowntime extends Command
      *
      * @var string
      */
-    protected $description = 'Check if some devices stopped sending activity signals.';
+    protected $description = 'Check if some devices stopped sending activity signals';
 
     /**
      * Execute the console command.
@@ -32,8 +32,14 @@ class CheckForDowntime extends Command
         $messages = Message::all();
 
         foreach ($messages as $message) {
-            if ($message->updated_at->diffInMinutes(Carbon::now()) > 10) {
-                Mail::to($message['email'])->send(new OperativityDisrupted());
+            if (
+                !$message->alert_sent &&
+                $message->state == 1 &&
+                $message->updated_at->diffInMinutes(Carbon::now()) > 10
+            ) {
+                Mail::to($message['email'])->send(new OperativityDisrupted($message));
+                $message->alert_sent = true;
+                $message->save();
             }
         }
     }

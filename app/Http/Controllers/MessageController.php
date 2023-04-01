@@ -57,6 +57,7 @@ class MessageController extends Controller
                 Mail::to($previous_message->email)->send(new OperativityRestored($downtime_delta));
             }
             $previous_message->ip = $validated['ip'];
+            $previous_message->alert_sent = false;
             $previous_message->touch();
             $previous_message->save();
             return (new MessageResource($previous_message))->response();
