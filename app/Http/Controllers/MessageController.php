@@ -64,7 +64,7 @@ class MessageController extends Controller
                     // send operativity restored notification
                     Mail::to($previous_message->email)->send(new OperativityRestored($downtime_delta));
                 }
-            } else if ($validated['state'] == 1) {
+            } else if ($validated['state'] == 1 && $previous_message->alert_sent == true) {
                 // send internet restored notification
                 Mail::to($previous_message->email)->send(new InternetRestored($downtime_delta));
             }
