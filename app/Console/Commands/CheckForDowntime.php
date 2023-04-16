@@ -35,7 +35,7 @@ class CheckForDowntime extends Command
             if (
                 !$message->alert_sent &&
                 $message->state == 1 &&
-                $message->updated_at->diffInMinutes(Carbon::now()) > 10
+                $message->updated_at->diffInMinutes(Carbon::now()) > 5
             ) {
                 Mail::to($message['email'])->send(new OperativityDisrupted($message));
                 $message->alert_sent = true;
