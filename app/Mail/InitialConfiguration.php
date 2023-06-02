@@ -37,7 +37,7 @@ class InitialConfiguration extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.initial_configuration',
+            markdown: 'emails.initial_configuration',
         );
     }
 

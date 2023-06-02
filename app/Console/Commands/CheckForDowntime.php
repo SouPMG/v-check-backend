@@ -29,7 +29,7 @@ class CheckForDowntime extends Command
      */
     public function handle(): void
     {
-        $messages = Message::all();
+        $messages = Message::where('state', 1)->get();
 
         foreach ($messages as $message) {
             if (

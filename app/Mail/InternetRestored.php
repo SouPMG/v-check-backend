@@ -37,7 +37,7 @@ class InternetRestored extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.internet_restored',
+            markdown: 'emails.internet_restored',
         );
     }
 

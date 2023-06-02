@@ -38,7 +38,7 @@ class OperativityDisrupted extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'emails.operativity_disrupted',
+            markdown: 'emails.operativity_disrupted',
         );
     }
 
