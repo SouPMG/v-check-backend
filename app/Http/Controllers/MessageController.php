@@ -48,7 +48,7 @@ class MessageController extends Controller
         if ($previous_message == null) {
             $new_message = Message::create($validated);
             if ($validated['state'] == 0) {
-                Mail::to($validated['email'])->send(new InitialConfiguration());
+                Mail::to($validated['email'])->send(new InitialConfiguration($new_message));
             }
             return (new MessageResource($new_message))->response();
         } else {
