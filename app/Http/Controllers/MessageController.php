@@ -70,6 +70,7 @@ class MessageController extends Controller
             }
             $previous_message->ip = $validated['ip'];
             $previous_message->frm = $validated['frm'];
+            $previous_message->ota = $validated['ota'];
             $previous_message->alert_sent = false;
             $previous_message->touch();
             $previous_message->save();
