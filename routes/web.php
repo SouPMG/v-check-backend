@@ -25,7 +25,9 @@ Route::get('/mailable/initial-configuration', function () {
 });
 
 Route::get('/mailable/internet-restored', function () {
-    return new App\Mail\InternetRestored(10);
+    $message = Message::where('state', 1)->first();
+
+    return new App\Mail\InternetRestored($message, 10);
 });
 
 Route::get('/mailable/operativity-disrupted', function () {
@@ -35,9 +37,13 @@ Route::get('/mailable/operativity-disrupted', function () {
 });
 
 Route::get('/mailable/operativity-restored', function () {
-    return new App\Mail\OperativityRestored(5);
+    $message = Message::where('state', 1)->first();
+
+    return new App\Mail\OperativityRestored($message, 5);
 });
 
 Route::get('/mailable/software-updated', function () {
-    return new App\Mail\SoftwareUpdated();
+    $message = Message::where('state', 1)->first();
+
+    return new App\Mail\SoftwareUpdated($message);
 });

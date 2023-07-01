@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -16,6 +17,7 @@ class InternetRestored extends Mailable
      * Create a new message instance.
      */
     public function __construct(
+        public Message $v_message,
         public $downtime_delta
     ) {
         //
