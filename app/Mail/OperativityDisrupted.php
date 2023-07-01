@@ -28,7 +28,7 @@ class OperativityDisrupted extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Operativity Disrupted',
+            subject: 'Disservizio rilevato',
         );
     }
 

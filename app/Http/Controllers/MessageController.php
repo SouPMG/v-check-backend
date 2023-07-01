@@ -48,31 +48,36 @@ class MessageController extends Controller
         if ($previous_message == null) {
             $new_message = Message::create($validated);
             if ($validated['state'] == 0) {
-                Mail::to($validated['email'])->send(new InitialConfiguration());
+                Mail::to($validated['email'])->send(new InitialConfiguration($new_message));
             }
             return (new MessageResource($new_message))->response();
         } else {
             // calculate downtime from last message
-            $now = Carbon::now();
-            $downtime_delta = $previous_message->updated_at->diffInHours($now);
+            $downtime_delta = $previous_message->updated_at->diff(Carbon::now())->format('%dg %Ho %Im %Ss');
 
+            // update message
+            $previous_message->ip = $validated['ip'];
+            $previous_message->frm = $validated['frm'];
+            $previous_message->ota = $validated['ota'];
+            $previous_message->alert_sent = false;
+            $previous_message->touch();
+
+            // send mail notifications
             if ($validated['state'] == 0) {
                 if ($validated['frm'] != $previous_message['frm']) {
                     // send software update notification
-                    Mail::to($previous_message->email)->send(new SoftwareUpdated());
+                    Mail::to($previous_message->email)->send(new SoftwareUpdated($previous_message));
                 } else {
                     // send operativity restored notification
-                    Mail::to($previous_message->email)->send(new OperativityRestored($downtime_delta));
+                    Mail::to($previous_message->email)->send(new OperativityRestored($previous_message, $downtime_delta));
                 }
             } else if ($validated['state'] == 1 && $previous_message->alert_sent == true) {
                 // send internet restored notification
-                Mail::to($previous_message->email)->send(new InternetRestored($downtime_delta));
+                Mail::to($previous_message->email)->send(new InternetRestored($previous_message, $downtime_delta));
             }
-            $previous_message->ip = $validated['ip'];
-            $previous_message->frm = $validated['frm'];
-            $previous_message->alert_sent = false;
-            $previous_message->touch();
+
             $previous_message->save();
+
             return (new MessageResource($previous_message))->response();
         }
     }

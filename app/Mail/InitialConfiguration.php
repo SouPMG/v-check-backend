@@ -2,8 +2,8 @@
 
 namespace App\Mail;
 
+use App\Models\Message;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -16,8 +16,9 @@ class InitialConfiguration extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
-    {
+    public function __construct(
+        public Message $v_message
+    ) {
         //
     }
 
@@ -27,7 +28,7 @@ class InitialConfiguration extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Initial Configuration',
+            subject: 'Configurazione iniziale',
         );
     }
 

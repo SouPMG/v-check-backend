@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
@@ -16,7 +17,8 @@ class OperativityRestored extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public $downtime_delta
+        public Message $v_message,
+        public string $downtime_delta
     ) {
         //
     }
@@ -27,7 +29,7 @@ class OperativityRestored extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Operativity Restored',
+            subject: 'Operatività ripristinata',
         );
     }
 
