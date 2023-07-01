@@ -36,5 +36,7 @@ class Message extends Model
      *
      * @var array
      */
-    protected $casts = [];
+    protected $casts = [
+        'alert_sent' => 'boolean'
+    ];
 }

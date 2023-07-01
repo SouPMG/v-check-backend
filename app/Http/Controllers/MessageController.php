@@ -55,12 +55,10 @@ class MessageController extends Controller
             // calculate downtime from last message
             $downtime_delta = $previous_message->updated_at->diff(Carbon::now())->format('%dg %Ho %Im %Ss');
 
-            // update message
+            // update message info
             $previous_message->ip = $validated['ip'];
             $previous_message->frm = $validated['frm'];
             $previous_message->ota = $validated['ota'];
-            $previous_message->alert_sent = false;
-            $previous_message->touch();
 
             // send mail notifications
             if ($validated['state'] == 0) {
@@ -74,8 +72,10 @@ class MessageController extends Controller
             } else if ($validated['state'] == 1 && $previous_message->alert_sent == true) {
                 // send internet restored notification
                 Mail::to($previous_message->email)->send(new InternetRestored($previous_message, $downtime_delta));
+                $previous_message->alert_sent = false;
             }
 
+            $previous_message->touch();
             $previous_message->save();
 
             return (new MessageResource($previous_message))->response();
