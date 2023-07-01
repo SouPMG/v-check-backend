@@ -1,12 +1,10 @@
 <?php
 
 use App\Models\Message;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use Carbon\Carbon;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,22 +17,8 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
-
-Route::get('/dashboard', function () {
-    $messages = DB::table('messages')->get();
-
-    return Inertia::render('Dashboard', [
-        'messages' => $messages,
-    ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::redirect('/', '/dashboard');
+Route::get('/dashboard', [DashboardController::class, 'home'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -43,6 +27,8 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
+
+// MAILABLES
 
 Route::get('/mailable/initial-configuration', function () {
     $message = Message::where('state', 1)->first();
