@@ -18,7 +18,7 @@ class OperativityRestored extends Mailable
      */
     public function __construct(
         public Message $v_message,
-        public $downtime_delta
+        public string $downtime_delta
     ) {
         //
     }

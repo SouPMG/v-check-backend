@@ -53,8 +53,7 @@ class MessageController extends Controller
             return (new MessageResource($new_message))->response();
         } else {
             // calculate downtime from last message
-            $now = Carbon::now();
-            $downtime_delta = $previous_message->updated_at->diffInHours($now);
+            $downtime_delta = $previous_message->updated_at->diff(Carbon::now())->format('%dg %Ho %Im %Ss');
 
             // update message
             $previous_message->ip = $validated['ip'];

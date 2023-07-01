@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Message;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,8 +27,9 @@ Route::get('/mailable/initial-configuration', function () {
 
 Route::get('/mailable/internet-restored', function () {
     $message = Message::where('state', 1)->first();
+    $downtime_delta = $message->updated_at->diff(Carbon::now())->format('%dg %Ho %Im %Ss');
 
-    return new App\Mail\InternetRestored($message, 10);
+    return new App\Mail\InternetRestored($message, $downtime_delta);
 });
 
 Route::get('/mailable/operativity-disrupted', function () {
@@ -38,8 +40,9 @@ Route::get('/mailable/operativity-disrupted', function () {
 
 Route::get('/mailable/operativity-restored', function () {
     $message = Message::where('state', 1)->first();
+    $downtime_delta = $message->updated_at->diff(Carbon::now())->format('%dg %Ho %Im %Ss');
 
-    return new App\Mail\OperativityRestored($message, 5);
+    return new App\Mail\OperativityRestored($message, $downtime_delta);
 });
 
 Route::get('/mailable/software-updated', function () {
