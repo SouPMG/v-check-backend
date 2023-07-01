@@ -23,6 +23,7 @@ class MessageResource extends JsonResource
             'ota' => $this->ota,
             'state' => $this->state,
             'email' => $this->email,
+            'alert_sent' => $this->alert_sent,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
