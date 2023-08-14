@@ -12,9 +12,22 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
+use Inertia\Inertia;
 
 class MessageController extends Controller
 {
+    /**
+     * Display messages frontend page.
+     */
+    public function home()
+    {
+        $messages = Message::all();
+
+        return Inertia::render('Messages', [
+            'messages' => $messages,
+        ]);
+    }
+
     /**
      * Display a listing of the resource.
      */
