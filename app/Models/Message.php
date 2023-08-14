@@ -21,6 +21,7 @@ class Message extends Model
         'frm',
         'ota',
         'state',
+        'alias',
         'email'
     ];
 
