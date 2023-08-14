@@ -38,6 +38,7 @@ class MessageController extends Controller
             'ota' => 'required',
             'state' => 'required',
             'email' => 'required',
+            'alias' => 'required',
         ]);
 
         $previous_message = Message::where('state', $validated['state'])
@@ -59,6 +60,7 @@ class MessageController extends Controller
             $previous_message->ip = $validated['ip'];
             $previous_message->frm = $validated['frm'];
             $previous_message->ota = $validated['ota'];
+            $previous_message->alias = $validated['alias'];
 
             // send mail notifications
             if ($validated['state'] == 0) {
