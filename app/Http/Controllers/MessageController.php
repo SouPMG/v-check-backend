@@ -84,10 +84,19 @@ class MessageController extends Controller
                     // send operativity restored notification
                     Mail::to($previous_message->email)->send(new OperativityRestored($previous_message, $downtime_delta));
                 }
-            } else if ($validated['state'] == 1 && $previous_message->alert_sent == true) {
-                // send internet restored notification
-                Mail::to($previous_message->email)->send(new InternetRestored($previous_message, $downtime_delta));
-                $previous_message->alert_sent = false;
+            } else if ($validated['state'] == 1) {
+                // update related message with state 0 to correctly calculate time delta
+                $related_message = Message::where('state', 0)
+                    ->where('sn', $validated['sn'])
+                    ->first();
+                $related_message->touch();
+                $related_message->save();
+
+                if ($previous_message->alert_sent == true) {
+                    // send internet restored notification
+                    Mail::to($previous_message->email)->send(new InternetRestored($previous_message, $downtime_delta));
+                    $previous_message->alert_sent = false;
+                }
             }
 
             $previous_message->touch();
