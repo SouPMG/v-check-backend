@@ -71,8 +71,10 @@ class MessageController extends Controller
 
             // update message info
             $previous_message->ip = $validated['ip'];
+            $previous_message->model = $validated['model'];
             $previous_message->frm = $validated['frm'];
             $previous_message->ota = $validated['ota'];
+            $previous_message->email = $validated['email'];
             $previous_message->alias = $validated['alias'];
 
             // send mail notifications
