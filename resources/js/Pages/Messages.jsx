@@ -11,7 +11,7 @@ export default function Messages({ auth, messages }) {
     const [open, setOpen] = useState(false);
     const [selectedMessage, setSelectedMessage] = useState(null);
 
-    const formatDate = (date) => format(new Date(date), "dd/MM/yyyy");
+    const formatDate = (date) => format(new Date(date), "dd/MM/yyyy HH:mm");
 
     const showMessageDetail = (message) => {
         setSelectedMessage(message);
@@ -226,8 +226,8 @@ export default function Messages({ auth, messages }) {
                         <table className="table-auto w-full">
                             <thead>
                                 <tr className="border-b-4">
-                                    <th className="text-left p-4">ID</th>
                                     <th className="text-left p-4">IP</th>
+                                    <th className="text-left p-4">Firmware</th>
                                     <th className="text-left p-4">Alias</th>
                                     <th className="text-left p-4">Seriale</th>
                                     <th className="text-left p-4">E-mail</th>
@@ -237,8 +237,8 @@ export default function Messages({ auth, messages }) {
                             <tbody>
                                 {messages.map((message) => (
                                     <tr className="border-b-2" key={message.id}>
-                                        <td className="p-4">{message.id}</td>
                                         <td className="p-4">{message.ip}</td>
+                                        <td className="p-4">{message.frm}</td>
                                         <td className="p-4">{message.alias}</td>
                                         <td className="p-4">{message.sn}</td>
                                         <td className="p-4">
