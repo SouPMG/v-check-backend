@@ -12,7 +12,7 @@ class UpdateMessage extends Command
      *
      * @var string
      */
-    protected $signature = 'message:update';
+    protected $signature = 'message:update {state=1}';
 
     /**
      * The console command description.
@@ -26,8 +26,9 @@ class UpdateMessage extends Command
      */
     public function handle(): void
     {
+        $state = $this->argument('state');
         $message = Message::where('email', 'mattia.giacobbe@gmail.com')
-            ->where('state', '1')
+            ->where('state', $state)
             ->where('sn', '00000002')
             ->first();
 
