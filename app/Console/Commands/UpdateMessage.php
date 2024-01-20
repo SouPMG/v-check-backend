@@ -27,6 +27,7 @@ class UpdateMessage extends Command
     public function handle(): void
     {
         $message = Message::where('email', 'mattia.giacobbe@gmail.com')
+            ->where('state', '1')
             ->where('sn', '00000002')
             ->first();
 
