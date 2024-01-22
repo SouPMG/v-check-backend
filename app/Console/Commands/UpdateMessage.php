@@ -33,6 +33,7 @@ class UpdateMessage extends Command
             ->first();
 
         if (!is_null($message)) {
+            $message->alert_sent = false;
             $message->touch();
             $message->save();
         }

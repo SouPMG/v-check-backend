@@ -13,6 +13,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('check:downtime')->everyMinute();
+        $schedule->command('message:update 00000002 0')->everyTwoMinutes();
+        $schedule->command('message:update 00000002 1')->everyTwoMinutes();
     }
 
     /**
