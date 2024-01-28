@@ -1,7 +1,9 @@
 import { Head, router } from "@inertiajs/react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import PrimaryButton from "@/Components/PrimaryButton";
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 
 export default function SerialNumbers({ auth, serialNumbers }) {
     const createSerialNumber = () => {
@@ -32,13 +34,13 @@ export default function SerialNumbers({ auth, serialNumbers }) {
                                 key={serialNumber.id}
                             >
                                 {serialNumber.code}{" "}
-                                <span
+                                <FontAwesomeIcon
+                                    className="cursor-pointer text-red-700"
+                                    icon={faTrashCan}
                                     onClick={() =>
                                         deleteSerialNumber(serialNumber.id)
                                     }
-                                >
-                                    D
-                                </span>
+                                />
                             </li>
                         ))}
                     </ul>
