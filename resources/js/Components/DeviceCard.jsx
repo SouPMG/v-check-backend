@@ -18,6 +18,7 @@ export default function DeviceCard({ device, showDeviceDetails }) {
                 <div className="flex flex-col justify-between flex-grow">
                     <ul className="list-none">
                         <li>SN {device.sn}</li>
+                        <li>Firmware v.{device.frm}</li>
                         <li>
                             <a
                                 className="text-blue-600"
