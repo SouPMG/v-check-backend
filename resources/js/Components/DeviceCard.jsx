@@ -1,4 +1,5 @@
-import IconDevice from "@/Components/IconDevice";
+import { faMicrochip } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { format } from "date-fns";
 
@@ -10,7 +11,7 @@ export default function DeviceCard({ device, showDeviceDetails }) {
             <div className="flex rounded-lg h-full bg-white p-8 flex-col">
                 <div className="flex items-center mb-3">
                     <div className="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full  bg-green-500 text-white flex-shrink-0">
-                        <IconDevice></IconDevice>
+                        <FontAwesomeIcon icon={faMicrochip} />
                     </div>
                     <h2 className="text-lg font-medium">{device.alias}</h2>
                 </div>
