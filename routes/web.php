@@ -2,6 +2,7 @@
 
 use App\Models\Message;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FirmwareUpdateController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SerialNumberController;
@@ -31,6 +32,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'home'])->name('dashboard');
     Route::get('/messages', [MessageController::class, 'home'])->name('messages');
     Route::resource('/serial-number', SerialNumberController::class);
+    Route::get('/update', [FirmwareUpdateController::class, 'home'])->name('update.home');
 });
 
 require __DIR__ . '/auth.php';

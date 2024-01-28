@@ -44,6 +44,15 @@ export default function Authenticated({ user, header, children }) {
                                 >
                                     Codici seriali
                                 </NavLink>
+
+                                <NavLink
+                                    href={route("update.home")}
+                                    active={route().current(
+                                        "update.home",
+                                    )}
+                                >
+                                    Aggiornamento
+                                </NavLink>
                             </div>
                         </div>
 
@@ -159,6 +168,12 @@ export default function Authenticated({ user, header, children }) {
                             active={route().current("serial-number.index")}
                         >
                             Codici seriali
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("update.home")}
+                            active={route().current("update.home")}
+                        >
+                            Aggiornamento
                         </ResponsiveNavLink>
                     </div>
 
