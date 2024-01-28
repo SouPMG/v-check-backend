@@ -35,6 +35,15 @@ export default function Authenticated({ user, header, children }) {
                                 >
                                     Messaggi
                                 </NavLink>
+
+                                <NavLink
+                                    href={route("serial-number.index")}
+                                    active={route().current(
+                                        "serial-number.index",
+                                    )}
+                                >
+                                    Codici seriali
+                                </NavLink>
                             </div>
                         </div>
 
@@ -87,7 +96,7 @@ export default function Authenticated({ user, header, children }) {
                             <button
                                 onClick={() =>
                                     setShowingNavigationDropdown(
-                                        (previousState) => !previousState
+                                        (previousState) => !previousState,
                                     )
                                 }
                                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out"
@@ -143,7 +152,13 @@ export default function Authenticated({ user, header, children }) {
                             href={route("messages")}
                             active={route().current("messages")}
                         >
-                            Messages
+                            Messaggi
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("serial-number.index")}
+                            active={route().current("serial-number.index")}
+                        >
+                            Codici seriali
                         </ResponsiveNavLink>
                     </div>
 

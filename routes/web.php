@@ -4,6 +4,7 @@ use App\Models\Message;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SerialNumberController;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
@@ -19,13 +20,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::redirect('/', '/dashboard');
-Route::get('/dashboard', [DashboardController::class, 'home'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('/messages', [MessageController::class, 'home'])->middleware(['auth', 'verified'])->name('messages');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'home'])->name('dashboard');
+    Route::get('/messages', [MessageController::class, 'home'])->name('messages');
+    Route::resource('/serial-number', SerialNumberController::class);
 });
 
 require __DIR__ . '/auth.php';

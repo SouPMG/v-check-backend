@@ -5,6 +5,7 @@ import { Dialog, Transition } from "@headlessui/react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import DeviceCard from "@/Components/DeviceCard";
 import DeviceDetails from "@/Components/DeviceDetails";
+import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function Messages({ auth, messages }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -83,13 +84,11 @@ export default function Messages({ auth, messages }) {
                                         </div>
 
                                         <div className="mt-4">
-                                            <button
-                                                type="button"
-                                                className="inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2"
+                                            <SecondaryButton
                                                 onClick={closeModal}
                                             >
                                                 Chiudi
-                                            </button>
+                                            </SecondaryButton>
                                         </div>
                                     </Dialog.Panel>
                                 </Transition.Child>
