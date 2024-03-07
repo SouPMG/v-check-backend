@@ -78,26 +78,26 @@ class MessageController extends Controller
             $previous_message->alias = $validated['alias'];
 
             // send mail notifications
-            if ($validated['state'] == 0) {
-                if ($validated['frm'] != $previous_message['frm']) {
-                    // send software update notification
-                    Mail::to($previous_message->email)->send(new SoftwareUpdated($previous_message));
-                } else {
+            if ($validated['frm'] != $previous_message['frm']) {
+                // send software update notification
+                Mail::to($previous_message->email)->send(new SoftwareUpdated($previous_message));
+            } else {
+                if ($validated['state'] == 0) {
                     // send operativity restored notification
                     Mail::to($previous_message->email)->send(new OperativityRestored($previous_message, $downtime_delta));
-                }
-            } else if ($validated['state'] == 1) {
-                // update related message with state 0 to correctly calculate time delta
-                $related_message = Message::where('state', 0)
-                    ->where('sn', $validated['sn'])
-                    ->first();
-                $related_message->touch();
-                $related_message->save();
+                } else if ($validated['state'] == 1) {
+                    // update related message with state 0 to correctly calculate time delta
+                    $related_message = Message::where('state', 0)
+                        ->where('sn', $validated['sn'])
+                        ->first();
+                    $related_message->touch();
+                    $related_message->save();
 
-                if ($previous_message->alert_sent == true) {
-                    // send internet restored notification
-                    Mail::to($previous_message->email)->send(new InternetRestored($previous_message, $downtime_delta));
-                    $previous_message->alert_sent = false;
+                    if ($previous_message->alert_sent == true) {
+                        // send internet restored notification
+                        Mail::to($previous_message->email)->send(new InternetRestored($previous_message, $downtime_delta));
+                        $previous_message->alert_sent = false;
+                    }
                 }
             }
 
