@@ -69,14 +69,6 @@ class MessageController extends Controller
             // calculate downtime from last message
             $downtime_delta = $previous_message->updated_at->diff(Carbon::now())->format('%dg %Ho %Im %Ss');
 
-            // update message info
-            $previous_message->ip = $validated['ip'];
-            $previous_message->model = $validated['model'];
-            $previous_message->frm = $validated['frm'];
-            $previous_message->ota = $validated['ota'];
-            $previous_message->email = $validated['email'];
-            $previous_message->alias = $validated['alias'];
-
             // send mail notifications
             if ($validated['frm'] != $previous_message['frm']) {
                 // send software update notification
@@ -101,6 +93,15 @@ class MessageController extends Controller
                 }
             }
 
+            // update message info
+            $previous_message->update([
+                'ip' => $validated['ip'],
+                'model' => $validated['model'],
+                'frm' => $validated['frm'],
+                'ota' => $validated['ota'],
+                'email' => $validated['email'],
+                'alias' => $validated['alias']
+            ]);
             $previous_message->touch();
             $previous_message->save();
 
