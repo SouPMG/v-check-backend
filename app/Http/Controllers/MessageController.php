@@ -72,7 +72,7 @@ class MessageController extends Controller
             // send mail notifications
             if ($validated['frm'] != $previous_message['frm']) {
                 // send software update notification
-                Mail::to($previous_message->email)->send(new SoftwareUpdated($previous_message));
+                Mail::to($previous_message->email)->send(new SoftwareUpdated($previous_message, $validated['frm']));
             } else {
                 if ($validated['state'] == 0) {
                     // send operativity restored notification

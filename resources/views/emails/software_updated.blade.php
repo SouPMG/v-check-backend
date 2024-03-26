@@ -4,6 +4,6 @@
     <x-mail::table>
         | Nome | Codice seriale | IP | Versione firmware |
         | :-----: | :-----: | :-----: | :-----: |
-        | {{ $v_message->alias }} | {{ $v_message->sn }} | {{ $v_message->ip }} | {{ $v_message->frm }} |
+        | {{ $v_message->alias }} | {{ $v_message->sn }} | {{ $v_message->ip }} | {{ $new_version }} |
     </x-mail::table>
 </x-mail::message>

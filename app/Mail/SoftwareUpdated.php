@@ -17,7 +17,8 @@ class SoftwareUpdated extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public Message $v_message
+        public Message $v_message,
+        public String $new_version
     ) {
         //
     }
