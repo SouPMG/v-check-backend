@@ -22,7 +22,7 @@ class Message extends Model
         'ota',
         'state',
         'alias',
-        'email'
+        'email',
     ];
 
     /**
@@ -38,6 +38,6 @@ class Message extends Model
      * @var array
      */
     protected $casts = [
-        'alert_sent' => 'boolean'
+        'alert_sent' => 'boolean',
     ];
 }

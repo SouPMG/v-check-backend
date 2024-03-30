@@ -9,8 +9,8 @@ use App\Mail\OperativityRestored;
 use App\Mail\SoftwareUpdated;
 use App\Models\Message;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
@@ -35,7 +35,7 @@ class MessageController extends Controller
     {
         $messages = Message::all();
 
-        return (MessageResource::collection($messages))->response();
+        return MessageResource::collection($messages)->response();
     }
 
     /**
@@ -64,6 +64,7 @@ class MessageController extends Controller
             if ($validated['state'] == 0) {
                 Mail::to($validated['email'])->send(new InitialConfiguration($new_message));
             }
+
             return (new MessageResource($new_message))->response();
         } else {
             // calculate downtime from last message
@@ -77,7 +78,7 @@ class MessageController extends Controller
                 if ($validated['state'] == 0) {
                     // send operativity restored notification
                     Mail::to($previous_message->email)->send(new OperativityRestored($previous_message, $downtime_delta));
-                } else if ($validated['state'] == 1) {
+                } elseif ($validated['state'] == 1) {
                     // update related message with state 0 to correctly calculate time delta
                     $related_message = Message::where('state', 0)
                         ->where('sn', $validated['sn'])
@@ -100,7 +101,7 @@ class MessageController extends Controller
                 'frm' => $validated['frm'],
                 'ota' => $validated['ota'],
                 'email' => $validated['email'],
-                'alias' => $validated['alias']
+                'alias' => $validated['alias'],
             ]);
             $previous_message->touch();
             $previous_message->save();

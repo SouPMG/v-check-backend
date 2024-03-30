@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Message;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FirmwareUpdateController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SerialNumberController;
+use App\Models\Message;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
@@ -35,7 +35,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/update', [FirmwareUpdateController::class, 'home'])->name('update.home');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
 
 // MAILABLES
 
@@ -68,5 +68,5 @@ Route::get('/mailable/operativity-restored', function () {
 Route::get('/mailable/software-updated', function () {
     $message = Message::where('state', 1)->first();
 
-    return new App\Mail\SoftwareUpdated($message);
+    return new App\Mail\SoftwareUpdated($message, '1.0');
 });

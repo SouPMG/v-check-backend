@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\SerialNumber;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SerialNumberController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      */
