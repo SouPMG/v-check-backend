@@ -11,34 +11,37 @@ import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function FirmwareUpdate({ auth, users }) {
-  const { data, errors, post, processing, setData, transform } = useForm({
+  const { data, errors, post, processing, reset, setData, transform } = useForm({
     version: '',
     link: '',
     changelog: '',
-    users: [],
   });
-  let selectedEmails = [];
-  console.log(errors);
+  const [selectedEmails, setSelectedEmails] = useState([]);
 
   const toggleUserEmail = (event, email) => {
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      selectedEmails = [...selectedEmails, email];
+      setSelectedEmails([...selectedEmails, email]);
     } else {
-      selectedEmails = selectedEmails.filter((userEmail) => userEmail !== email);
+      setSelectedEmails(selectedEmails.filter((userEmail) => userEmail !== email));
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('submitted', data);
+
     transform((data) => ({
       ...data,
       emails: selectedEmails,
     }));
 
-    post('/update', data);
+    post('/update', {
+      onSuccess: () => {
+        reset();
+        setSelectedEmails([]);
+      },
+    });
   };
 
   return (
@@ -100,7 +103,11 @@ export default function FirmwareUpdate({ auth, users }) {
 
             {users.map((user, index) => (
               <label className="flex items-center" key={index}>
-                <Checkbox name="remember" onChange={(e) => toggleUserEmail(e, user.email)} />
+                <Checkbox
+                  name="remember"
+                  checked={selectedEmails.includes(user.email)}
+                  onChange={(e) => toggleUserEmail(e, user.email)}
+                />
 
                 <span className="ml-2 text-sm text-gray-600">{user.email}</span>
               </label>
