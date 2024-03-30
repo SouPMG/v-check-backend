@@ -1,5 +1,8 @@
 import { Head, useForm } from '@inertiajs/react';
 
+import { useState } from 'react';
+
+import Checkbox from '@/Components/Checkbox';
 import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
@@ -7,15 +10,35 @@ import TextArea from '@/Components/TextArea';
 import TextInput from '@/Components/TextInput';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function FirmwareUpdate({ auth }) {
-  const { data, setData, post, processing, errors } = useForm({
+export default function FirmwareUpdate({ auth, users }) {
+  const { data, errors, post, processing, setData, transform } = useForm({
     version: '',
     link: '',
     changelog: '',
+    users: [],
   });
+  let selectedEmails = [];
+  console.log(errors);
 
-  const handleSubmit = () => {
+  const toggleUserEmail = (event, email) => {
+    const isChecked = event.target.checked;
+
+    if (isChecked) {
+      selectedEmails = [...selectedEmails, email];
+    } else {
+      selectedEmails = selectedEmails.filter((userEmail) => userEmail !== email);
+    }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
     console.log('submitted', data);
+    transform((data) => ({
+      ...data,
+      emails: selectedEmails,
+    }));
+
+    post('/update', data);
   };
 
   return (
@@ -23,7 +46,7 @@ export default function FirmwareUpdate({ auth }) {
       user={auth.user}
       header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Aggiornamento firmware</h2>}
     >
-      <Head title="Dashboard" />
+      <Head title="Aggiornamento firmware" />
 
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <h1 className="text-2xl">Invia un pacchetto di aggiornamento software</h1>
@@ -70,6 +93,20 @@ export default function FirmwareUpdate({ auth }) {
             ></TextArea>
 
             <InputError message={errors.changelog} className="mt-2" />
+          </div>
+
+          <div className="flex flex-col">
+            <InputLabel value="Utenti a cui inviare la notifica" />
+
+            {users.map((user, index) => (
+              <label className="flex items-center" key={index}>
+                <Checkbox name="remember" onChange={(e) => toggleUserEmail(e, user.email)} />
+
+                <span className="ml-2 text-sm text-gray-600">{user.email}</span>
+              </label>
+            ))}
+
+            <InputError message={errors.emails} className="mt-2" />
           </div>
 
           <PrimaryButton disabled={processing} className="flex justify-center" type="submit">

@@ -33,6 +33,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/messages', [MessageController::class, 'home'])->name('messages');
     Route::resource('/serial-number', SerialNumberController::class);
     Route::get('/update', [FirmwareUpdateController::class, 'home'])->name('update.home');
+    Route::post('/update', [FirmwareUpdateController::class, 'notifyFirmwareUpdate'])->name('update.notify');
 });
 
 require __DIR__.'/auth.php';

@@ -2,14 +2,13 @@
 
 namespace App\Mail;
 
-use App\Models\Message;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class SoftwareUpdated extends Mailable
+class FirmwareUpdateAvailable extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -17,8 +16,9 @@ class SoftwareUpdated extends Mailable
      * Create a new message instance.
      */
     public function __construct(
-        public Message $v_message,
-        public string $new_version
+        public string $newVersion,
+        public string $link,
+        public string $changelog,
     ) {
         //
     }
@@ -29,7 +29,7 @@ class SoftwareUpdated extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Aggiornamento completato',
+            subject: 'Nuovo aggiornamento disponibile',
         );
     }
 
@@ -39,7 +39,7 @@ class SoftwareUpdated extends Mailable
     public function content(): Content
     {
         return new Content(
-            markdown: 'emails.software_updated',
+            markdown: 'emails.firmware_update_available',
         );
     }
 

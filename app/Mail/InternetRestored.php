@@ -29,7 +29,7 @@ class InternetRestored extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Internet Restored',
+            subject: 'Internet ripristinato',
         );
     }
 
