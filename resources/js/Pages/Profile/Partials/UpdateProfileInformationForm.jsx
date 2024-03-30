@@ -1,111 +1,102 @@
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import { Link, useForm, usePage } from "@inertiajs/react";
-import { Transition } from "@headlessui/react";
+import { Link, useForm, usePage } from '@inertiajs/react';
 
-export default function UpdateProfileInformation({
-    mustVerifyEmail,
-    status,
-    className = "",
-}) {
-    const user = usePage().props.auth.user;
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
-        useForm({
-            name: user.name,
-            email: user.email,
-        });
+import { Transition } from '@headlessui/react';
 
-    const submit = (e) => {
-        e.preventDefault();
+export default function UpdateProfileInformation({ mustVerifyEmail, status, className = '' }) {
+  const user = usePage().props.auth.user;
 
-        patch(route("profile.update"));
-    };
+  const { data, setData, patch, errors, processing, recentlySuccessful } = useForm({
+    name: user.name,
+    email: user.email,
+  });
 
-    return (
-        <section className={className}>
-            <header>
-                <h2 className="text-lg font-medium text-gray-900">
-                    Informazioni Account
-                </h2>
+  const submit = (e) => {
+    e.preventDefault();
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Aggiorna le informazioni del tuo account.
-                </p>
-            </header>
+    patch(route('profile.update'));
+  };
 
-            <form onSubmit={submit} className="mt-6 space-y-6">
-                <div>
-                    <InputLabel htmlFor="name" value="Nome" />
+  return (
+    <section className={className}>
+      <header>
+        <h2 className="text-lg font-medium text-gray-900">Informazioni Account</h2>
 
-                    <TextInput
-                        id="name"
-                        className="mt-1 block w-full"
-                        value={data.name}
-                        onChange={(e) => setData("name", e.target.value)}
-                        required
-                        isFocused
-                        autoComplete="name"
-                    />
+        <p className="mt-1 text-sm text-gray-600">Aggiorna le informazioni del tuo account.</p>
+      </header>
 
-                    <InputError className="mt-2" message={errors.name} />
-                </div>
+      <form onSubmit={submit} className="mt-6 space-y-6">
+        <div>
+          <InputLabel htmlFor="name" value="Nome" />
 
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
+          <TextInput
+            id="name"
+            className="mt-1 block w-full"
+            value={data.name}
+            onChange={(e) => setData('name', e.target.value)}
+            required
+            isFocused
+            autoComplete="name"
+          />
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        className="mt-1 block w-full"
-                        value={data.email}
-                        onChange={(e) => setData("email", e.target.value)}
-                        required
-                        autoComplete="username"
-                    />
+          <InputError className="mt-2" message={errors.name} />
+        </div>
 
-                    <InputError className="mt-2" message={errors.email} />
-                </div>
+        <div>
+          <InputLabel htmlFor="email" value="Email" />
 
-                {mustVerifyEmail && user.email_verified_at === null && (
-                    <div>
-                        <p className="text-sm mt-2 text-gray-800">
-                            La tua mail non è verificata.
-                            <Link
-                                href={route("verification.send")}
-                                method="post"
-                                as="button"
-                                className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                            >
-                                Clicca qui per inviare nuovamente la mail di
-                                verifica.
-                            </Link>
-                        </p>
+          <TextInput
+            id="email"
+            type="email"
+            className="mt-1 block w-full"
+            value={data.email}
+            onChange={(e) => setData('email', e.target.value)}
+            required
+            autoComplete="username"
+          />
 
-                        {status === "verification-link-sent" && (
-                            <div className="mt-2 font-medium text-sm text-green-600">
-                                Un nuovo link di verifica è stato inviato al tuo
-                                indirizzo email.
-                            </div>
-                        )}
-                    </div>
-                )}
+          <InputError className="mt-2" message={errors.email} />
+        </div>
 
-                <div className="flex items-center gap-4">
-                    <PrimaryButton disabled={processing}>Salva</PrimaryButton>
+        {mustVerifyEmail && user.email_verified_at === null && (
+          <div>
+            <p className="mt-2 text-sm text-gray-800">
+              La tua mail non è verificata.
+              <Link
+                href={route('verification.send')}
+                method="post"
+                as="button"
+                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              >
+                Clicca qui per inviare nuovamente la mail di verifica.
+              </Link>
+            </p>
 
-                    <Transition
-                        show={recentlySuccessful}
-                        enterFrom="opacity-0"
-                        leaveTo="opacity-0"
-                        className="transition ease-in-out"
-                    >
-                        <p className="text-sm text-gray-600">Salvato.</p>
-                    </Transition>
-                </div>
-            </form>
-        </section>
-    );
+            {status === 'verification-link-sent' && (
+              <div className="mt-2 text-sm font-medium text-green-600">
+                Un nuovo link di verifica è stato inviato al tuo indirizzo email.
+              </div>
+            )}
+          </div>
+        )}
+
+        <div className="flex items-center gap-4">
+          <PrimaryButton disabled={processing}>Salva</PrimaryButton>
+
+          <Transition
+            show={recentlySuccessful}
+            enterFrom="opacity-0"
+            leaveTo="opacity-0"
+            className="transition ease-in-out"
+          >
+            <p className="text-sm text-gray-600">Salvato.</p>
+          </Transition>
+        </div>
+      </form>
+    </section>
+  );
 }

@@ -1,118 +1,99 @@
-import { useRef, useState } from "react";
-import DangerButton from "@/Components/DangerButton";
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import Modal from "@/Components/Modal";
-import SecondaryButton from "@/Components/SecondaryButton";
-import TextInput from "@/Components/TextInput";
-import { useForm } from "@inertiajs/react";
+import { useForm } from '@inertiajs/react';
 
-export default function DeleteUserForm({ className = "" }) {
-    const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
-    const passwordInput = useRef();
+import { useRef, useState } from 'react';
 
-    const {
-        data,
-        setData,
-        delete: destroy,
-        processing,
-        reset,
-        errors,
-    } = useForm({
-        password: "",
+import DangerButton from '@/Components/DangerButton';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import Modal from '@/Components/Modal';
+import SecondaryButton from '@/Components/SecondaryButton';
+import TextInput from '@/Components/TextInput';
+
+export default function DeleteUserForm({ className = '' }) {
+  const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+  const passwordInput = useRef();
+
+  const {
+    data,
+    setData,
+    delete: destroy,
+    processing,
+    reset,
+    errors,
+  } = useForm({
+    password: '',
+  });
+
+  const confirmUserDeletion = () => {
+    setConfirmingUserDeletion(true);
+  };
+
+  const deleteUser = (e) => {
+    e.preventDefault();
+
+    destroy(route('profile.destroy'), {
+      preserveScroll: true,
+      onSuccess: () => closeModal(),
+      onError: () => passwordInput.current.focus(),
+      onFinish: () => reset(),
     });
+  };
 
-    const confirmUserDeletion = () => {
-        setConfirmingUserDeletion(true);
-    };
+  const closeModal = () => {
+    setConfirmingUserDeletion(false);
 
-    const deleteUser = (e) => {
-        e.preventDefault();
+    reset();
+  };
 
-        destroy(route("profile.destroy"), {
-            preserveScroll: true,
-            onSuccess: () => closeModal(),
-            onError: () => passwordInput.current.focus(),
-            onFinish: () => reset(),
-        });
-    };
+  return (
+    <section className={`space-y-6 ${className}`}>
+      <header>
+        <h2 className="text-lg font-medium text-gray-900">Elimina Account</h2>
 
-    const closeModal = () => {
-        setConfirmingUserDeletion(false);
+        <p className="mt-1 text-sm text-gray-600">
+          Una volta eliminato il tuo account, tutte le sue risorse e i dati verranno eliminati definitivamente. Prima di
+          cancellare il tuo account, scarica tutti i dati o le informazioni che desideri conservare.
+        </p>
+      </header>
 
-        reset();
-    };
+      <DangerButton onClick={confirmUserDeletion}>Elimina Account</DangerButton>
 
-    return (
-        <section className={`space-y-6 ${className}`}>
-            <header>
-                <h2 className="text-lg font-medium text-gray-900">
-                    Elimina Account
-                </h2>
+      <Modal show={confirmingUserDeletion} onClose={closeModal}>
+        <form onSubmit={deleteUser} className="p-6">
+          <h2 className="text-lg font-medium text-gray-900">Sicuro di voler eliminare il tuo account?</h2>
 
-                <p className="mt-1 text-sm text-gray-600">
-                    Una volta eliminato il tuo account, tutte le sue risorse e i
-                    dati verranno eliminati definitivamente. Prima di cancellare
-                    il tuo account, scarica tutti i dati o le informazioni che
-                    desideri conservare.
-                </p>
-            </header>
+          <p className="mt-1 text-sm text-gray-600">
+            Una volta eliminato il tuo account, tutte le sue risorse e i dati verranno eliminati definitivamente.
+            Inserisci la tua password per confermare di voler eliminare definitivamente il tuo account.
+          </p>
 
-            <DangerButton onClick={confirmUserDeletion}>
-                Elimina Account
+          <div className="mt-6">
+            <InputLabel htmlFor="password" value="Password" className="sr-only" />
+
+            <TextInput
+              id="password"
+              type="password"
+              name="password"
+              ref={passwordInput}
+              value={data.password}
+              onChange={(e) => setData('password', e.target.value)}
+              className="mt-1 block w-3/4"
+              isFocused
+              placeholder="Password"
+            />
+
+            <InputError message={errors.password} className="mt-2" />
+          </div>
+
+          <div className="mt-6 flex justify-end">
+            <SecondaryButton onClick={closeModal}>Annulla</SecondaryButton>
+
+            <DangerButton className="ml-3" disabled={processing}>
+              Elimina Account
             </DangerButton>
-
-            <Modal show={confirmingUserDeletion} onClose={closeModal}>
-                <form onSubmit={deleteUser} className="p-6">
-                    <h2 className="text-lg font-medium text-gray-900">
-                        Sicuro di voler eliminare il tuo account?
-                    </h2>
-
-                    <p className="mt-1 text-sm text-gray-600">
-                        Una volta eliminato il tuo account, tutte le sue risorse
-                        e i dati verranno eliminati definitivamente. Inserisci
-                        la tua password per confermare di voler eliminare
-                        definitivamente il tuo account.
-                    </p>
-
-                    <div className="mt-6">
-                        <InputLabel
-                            htmlFor="password"
-                            value="Password"
-                            className="sr-only"
-                        />
-
-                        <TextInput
-                            id="password"
-                            type="password"
-                            name="password"
-                            ref={passwordInput}
-                            value={data.password}
-                            onChange={(e) =>
-                                setData("password", e.target.value)
-                            }
-                            className="mt-1 block w-3/4"
-                            isFocused
-                            placeholder="Password"
-                        />
-
-                        <InputError
-                            message={errors.password}
-                            className="mt-2"
-                        />
-                    </div>
-
-                    <div className="mt-6 flex justify-end">
-                        <SecondaryButton onClick={closeModal}>
-                            Annulla
-                        </SecondaryButton>
-
-                        <DangerButton className="ml-3" disabled={processing}>
-                            Elimina Account
-                        </DangerButton>
-                    </div>
-                </form>
-            </Modal>
-        </section>
-    );
+          </div>
+        </form>
+      </Modal>
+    </section>
+  );
 }
