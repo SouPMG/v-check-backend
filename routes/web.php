@@ -34,6 +34,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/serial-number', SerialNumberController::class);
     Route::get('/update', [FirmwareUpdateController::class, 'home'])->name('update.home');
     Route::post('/update', [FirmwareUpdateController::class, 'notifyFirmwareUpdate'])->name('update.notify');
+    Route::post('/update/upload', [FirmwareUpdateController::class, 'uploadFirmwarePackage'])->name('update.upload');
 });
 
 require __DIR__.'/auth.php';

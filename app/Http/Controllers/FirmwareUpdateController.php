@@ -41,4 +41,21 @@ class FirmwareUpdateController extends Controller
 
         return to_route('update.home');
     }
+
+    /**
+     * Send firmware update email notification.
+     */
+    public function uploadFirmwarePackage(Request $request)
+    {
+        $validated = $request->validate([
+            'package' => ['required'],
+        ]);
+        $file = $request->file('package');
+
+        $path = $file->store(
+            'firmwares/'.$file->getClientOriginalName(), 'public'
+        );
+
+        return to_route('update.home');
+    }
 }
