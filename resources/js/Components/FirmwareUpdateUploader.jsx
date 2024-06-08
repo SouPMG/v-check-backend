@@ -2,6 +2,7 @@ import { useForm } from '@inertiajs/react';
 
 import { useState } from 'react';
 
+import Alert from './Alert';
 import InputError from './InputError';
 import InputLabel from './InputLabel';
 import PrimaryButton from './PrimaryButton';
@@ -47,6 +48,10 @@ export default function FirmwareUpdateUploader() {
       <PrimaryButton disabled={processing} type="submit">
         Carica
       </PrimaryButton>
+
+      <Alert className="mt-3" type="info">
+        I file caricati possono essere scaricati da <code>/storage/firmwares/&lt;nome del file caricato&gt;</code>
+      </Alert>
     </>
   );
 }

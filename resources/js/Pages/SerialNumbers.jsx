@@ -1,5 +1,6 @@
 import { Head, router } from '@inertiajs/react';
 
+import Alert from '@/Components/Alert';
 import PrimaryButton from '@/Components/PrimaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
@@ -28,13 +29,14 @@ export default function SerialNumbers({ auth, serialNumbers }) {
           <div className="flex flex-col items-start gap-2">
             <h1 className="text-2xl">Genera codici seriali</h1>
             <p>Clicca per generare un nuovo codice seriale randomico di 8 cifre.</p>
-            <div className="mb-4 flex items-center rounded-lg bg-yellow-100 p-4 text-sm text-yellow-800" role="alert">
-              <FontAwesomeIcon className="me-3 inline h-4 w-4 flex-shrink-0" icon={faCircleInfo} />
+
+            <Alert className="mb-4" type="warning">
               <div>
                 <span className="font-medium">Attenzione!</span> Durante la registrazione di un nuovo dispositivo verrà
                 restituito un errore qualora il codice seriale inviato non sia presente nella lista.
               </div>
-            </div>
+            </Alert>
+
             <PrimaryButton className="w-auto" onClick={createSerialNumber}>
               Genera SN
             </PrimaryButton>
