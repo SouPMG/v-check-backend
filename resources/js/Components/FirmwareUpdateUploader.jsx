@@ -8,7 +8,7 @@ import InputLabel from './InputLabel';
 import PrimaryButton from './PrimaryButton';
 
 export default function FirmwareUpdateUploader() {
-  const { data, errors, post, processing, reset, setData } = useForm({
+  const { errors, post, processing, reset, setData } = useForm({
     package: '',
   });
   const [uploadSuccessful, setUploadSuccessful] = useState(false);
@@ -43,11 +43,13 @@ export default function FirmwareUpdateUploader() {
         </div>
 
         {uploadSuccessful && <p className="text-green-400">Il file è stato caricato con successo!</p>}
-      </form>
 
-      <PrimaryButton disabled={processing} type="submit">
-        Carica
-      </PrimaryButton>
+        <div className="align-items-start flex">
+          <PrimaryButton disabled={processing} type="submit">
+            Carica
+          </PrimaryButton>
+        </div>
+      </form>
 
       <Alert className="mt-3" type="info">
         I file caricati possono essere scaricati da <code>/storage/firmwares/&lt;nome del file caricato&gt;</code>
