@@ -106,10 +106,13 @@ export default function FirmwareUpdateForm({ users }) {
 
           <InputError message={errors.emails} className="mt-2" />
         </div>
+
+        <div>
+          <PrimaryButton disabled={processing} type="submit">
+            Invia
+          </PrimaryButton>
+        </div>
       </form>
-      <PrimaryButton disabled={processing} type="submit">
-        Invia
-      </PrimaryButton>
     </>
   );
 }

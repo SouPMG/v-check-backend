@@ -7,6 +7,7 @@ use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Storage;
 
 class FirmwareUpdateController extends Controller
 {
@@ -16,9 +17,11 @@ class FirmwareUpdateController extends Controller
     public function home()
     {
         $emails = Message::select('email')->groupBy('email')->get();
+        $firmwares = $this->listFirmwarePackages();
 
         return Inertia::render('FirmwareUpdate', [
             'users' => $emails,
+            'firmwares' => $firmwares
         ]);
     }
 
@@ -43,19 +46,36 @@ class FirmwareUpdateController extends Controller
     }
 
     /**
-     * Send firmware update email notification.
+     * Upload a new firmware package.
      */
     public function uploadFirmwarePackage(Request $request)
     {
-        $validated = $request->validate([
-            'package' => ['required'],
+        $request->validate([
+            'package' => 'required|file|max:10240',
         ]);
         $file = $request->file('package');
+        $originalName = $file->getClientOriginalName();
 
-        $path = $file->store(
-            'firmwares/'.$file->getClientOriginalName(), 'public'
-        );
+        // Salva il file usando il nome originale
+        $file->storeAs('public/firmwares', $originalName);
 
         return to_route('update.home');
+    }
+
+    /**
+     * Return a list of uploaded firmware packages.
+     */
+    public function listFirmwarePackages()
+    {
+        $files = Storage::files('public/firmwares');
+
+        $fileLinks = array_map(function ($file) {
+            return [
+                'name' => basename($file),
+                'url' => Storage::url($file),
+            ];
+        }, $files);
+
+        return $fileLinks;
     }
 }

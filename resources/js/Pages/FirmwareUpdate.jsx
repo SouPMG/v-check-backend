@@ -4,7 +4,8 @@ import FirmwareUpdateForm from '@/Components/FirmwareUpdateForm';
 import FirmwareUpdateUploader from '@/Components/FirmwareUpdateUploader';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
-export default function FirmwareUpdate({ auth, users }) {
+export default function FirmwareUpdate({ auth, users, firmwares }) {
+  console.log(firmwares)
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -15,6 +16,16 @@ export default function FirmwareUpdate({ auth, users }) {
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
         <h3 className="text-2xl">Carica un pacchetto di aggiornamento</h3>
         <FirmwareUpdateUploader />
+
+        <h4>Firmware caricati</h4>
+        <ul>
+          {firmwares.map((firmware, index) => (
+
+          <li key={index}>
+            <a href={firmware.url}>{firmware.name}</a>
+          </li>
+          ))}
+        </ul>
 
         <div className="my-5 flex items-center">
           <hr className="flex-grow" />

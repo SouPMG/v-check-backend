@@ -50,10 +50,6 @@ export default function FirmwareUpdateUploader() {
           </PrimaryButton>
         </div>
       </form>
-
-      <Alert className="mt-3" type="info">
-        I file caricati possono essere scaricati da <code>/storage/firmwares/&lt;nome del file caricato&gt;</code>
-      </Alert>
     </>
   );
 }
