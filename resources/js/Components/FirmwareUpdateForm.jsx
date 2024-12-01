@@ -14,38 +14,33 @@ export default function FirmwareUpdateForm({ users }) {
     version: '',
     link: '',
     changelog: '',
+    emails: [],
   });
-  const [selectedEmails, setSelectedEmails] = useState([]);
 
   const toggleUserEmail = (event, email) => {
     const isChecked = event.target.checked;
 
     if (isChecked) {
-      setSelectedEmails([...selectedEmails, email]);
+      setData('emails', [...data.emails, email]);
     } else {
-      setSelectedEmails(selectedEmails.filter((userEmail) => userEmail !== email));
+      setData(
+        'emails',
+        data.emails.filter((userEmail) => userEmail !== email)
+      );
     }
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    transform((data) => ({
-      ...data,
-      emails: selectedEmails,
-    }));
-
     post('/update', {
-      onSuccess: () => {
-        reset();
-        setSelectedEmails([]);
-      },
+      onSuccess: () => reset(),
     });
   };
 
   return (
     <>
-      <form className=" mb-3 mt-4 flex flex-col gap-4" onSubmit={handleSubmit}>
+      <form className="mb-3 mt-4 flex flex-col gap-4" onSubmit={handleSubmit}>
         <div className="flex flex-col">
           <InputLabel htmlFor="version" value="Nuova versione" />
 
@@ -96,7 +91,7 @@ export default function FirmwareUpdateForm({ users }) {
             <label className="flex items-center" key={index}>
               <Checkbox
                 name="remember"
-                checked={selectedEmails.includes(user.email)}
+                checked={data.emails.includes(user.email)}
                 onChange={(e) => toggleUserEmail(e, user.email)}
               />
 

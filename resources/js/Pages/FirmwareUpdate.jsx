@@ -5,7 +5,6 @@ import FirmwareUpdateUploader from '@/Components/FirmwareUpdateUploader';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 export default function FirmwareUpdate({ auth, users, firmwares }) {
-  console.log(firmwares)
   return (
     <AuthenticatedLayout
       user={auth.user}
@@ -20,10 +19,9 @@ export default function FirmwareUpdate({ auth, users, firmwares }) {
         <h4>Firmware caricati</h4>
         <ul>
           {firmwares.map((firmware, index) => (
-
-          <li key={index}>
-            <a href={firmware.url}>{firmware.name}</a>
-          </li>
+            <li key={index}>
+              <a href={firmware.url}>{firmware.name}</a>
+            </li>
           ))}
         </ul>
 

@@ -6,8 +6,8 @@ use App\Mail\FirmwareUpdateAvailable;
 use App\Models\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Inertia\Inertia;
 use Illuminate\Support\Facades\Storage;
+use Inertia\Inertia;
 
 class FirmwareUpdateController extends Controller
 {
@@ -21,7 +21,7 @@ class FirmwareUpdateController extends Controller
 
         return Inertia::render('FirmwareUpdate', [
             'users' => $emails,
-            'firmwares' => $firmwares
+            'firmwares' => $firmwares,
         ]);
     }
 
