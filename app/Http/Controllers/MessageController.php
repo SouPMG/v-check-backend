@@ -71,13 +71,14 @@ class MessageController extends Controller
             $downtime_delta = $previous_message->updated_at->diff(Carbon::now())->format('%dg %Ho %Im %Ss');
 
             // send mail notifications
-            if ($validated['frm'] != $previous_message['frm']) {
+            if ($validated['frm'] != $previous_message['frm'] && $validated['state'] == 0) {
                 // send software update notification
                 Mail::to($previous_message->email)->send(new SoftwareUpdated($previous_message, $validated['frm']));
             } else {
-                if ($validated['state'] == 0) {
+                if ($validated['state'] == 0 && $previous_message->alert_sent == true) {
                     // send operativity restored notification
                     Mail::to($previous_message->email)->send(new OperativityRestored($previous_message, $downtime_delta));
+                    $previous_message->alert_sent = false;
                 } elseif ($validated['state'] == 1) {
                     // update related message with state 0 to correctly calculate time delta
                     $related_message = Message::where('state', 0)
