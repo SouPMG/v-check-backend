@@ -2,7 +2,6 @@ import { useForm } from '@inertiajs/react';
 
 import { useState } from 'react';
 
-import Alert from './Alert';
 import InputError from './InputError';
 import InputLabel from './InputLabel';
 import PrimaryButton from './PrimaryButton';

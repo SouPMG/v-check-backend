@@ -5,7 +5,6 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
-import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function SerialNumbers({ auth, serialNumbers }) {
