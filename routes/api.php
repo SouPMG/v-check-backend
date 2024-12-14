@@ -19,6 +19,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::apiResources([
-    'messages' => MessageController::class,
-]);
+Route::middleware(['auth.apikey'])->group(function () {
+    Route::apiResources([
+        'messages' => MessageController::class,
+    ]);
+});
